@@ -1,5 +1,16 @@
 from flask import Flask,render_template
 app = Flask(__name__)
+import sqlite3
+#Retrieve data from database
+def getData():
+  conn = sqlite3.connect('../sensorsData.db')
+  curs = conn.cursor()
+  for row in curs.execute("SELECT * FROM DHT_data ORDER BY timestamp DESC LIMIT 1"):
+    time = str(row[0])
+    temp = row[1]
+    hum = row[2]
+  conn.close()
+  return time, temp, hum
 
 @app.route("/")
 def hello():
